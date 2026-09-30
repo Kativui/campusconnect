@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus Map | CampusConnect</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<script src="auth.js"></script>
+  <header class="navbar">
+    <h1 class="logo">CampusConnect</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="announcements.html">Announcements</a>
+      <a href="rooms.html">Rooms</a>
+      <a href="freshers.html">Freshers Info</a>
+      <a href="campus-map.html">Campus Map</a>
+        <a href="#" id="logoutLink">Logout</a>
+    </nav>
+  </header>
+<main class="page">
+  <h2 class="page-title">Campus Map</h2>
+  <p class="page-subtitle">A simplified guide to key buildings. Not to scale — click a building for details.</p>
+
+  <div class="map-layout">
+    <div class="map-container" id="mapContainer"></div>
+    <div class="map-info" id="mapInfo">
+      <h3>Select a building</h3>
+      <p>Click any shape on the map to see details.</p>
+    </div>
+  </div>
+</main>
+  <script src="campus-map.js"></script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rooms | CampusConnect</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<script src="auth.js"></script>
+  <header class="navbar">
+    <h1 class="logo">CampusConnect</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="announcements.html">Announcements</a>
+      <a href="rooms.html">Rooms</a>
+      <a href="freshers.html">Freshers Info</a>
+      <a href="campus-map.html">Campus Map</a>
+        <a href="#" id="logoutLink">Logout</a>
+    </nav>
+  </header>
+<main class="page">
+  <h2 class="page-title">Classrooms</h2>
+  <p class="page-subtitle">See which rooms are free right now. Lecturers can reserve open rooms.</p>
+  <div class="filters">
+    <select id="daySelect">
+      <option>Monday</option>
+      <option>Tuesday</option>
+      <option>Wednesday</option>
+      <option>Thursday</option>
+      <option>Friday</option>
+    </select>
+    <select id="slotSelect">
+      <option>7am-10am</option>
+      <option>10am-1pm</option>
+      <option>1pm-4pm</option>
+      <option>4pm-7pm</option>
+    </select>
+    <input type="number" id="weekInput" min="1" max="15" value="5">
+    <button id="searchBtn">Find free rooms</button>
+  </div>
+  <div class="filters">
+    <input type="text" id="unitSearch" placeholder="Search unit code, e.g. BEC B101">
+    <button id="unitSearchBtn">Find class</button>
+  </div>
+  <div id="unitResults"></div>
+
+  <div class="room-grid" id="results"></div>
+  
+  </div>
+</main>
+  <script src="rooms.js"></script>
+</body>
+</html>

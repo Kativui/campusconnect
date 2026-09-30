@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusConnect</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <script src="auth.js"></script>
+
+  <header class="navbar">
+  <h1 class="logo">CampusConnect</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="announcements.html">Announcements</a>
+    <a href="rooms.html">Rooms</a>
+    <a href="freshers.html">Freshers Info</a>
+    <a href="campus-map.html">Campus Map</a>
+      <a href="#" id="logoutLink">Logout</a>
+  </nav>
+</header>
+
+
+
+<section class="hero">
+  <h2>Your Campus, Connected</h2>
+  <p>Announcements, free classrooms, and student updates in one place.</p>
+  <a href="#login" class="btn">Login with School Email</a>
+</section>
+
+<section class="login-section" id="login">
+  <h2>Student Login</h2>
+      <div class="role-toggle">
+      <button type="button" class="role-btn active" data-role="student">Student</button>
+      <button type="button" class="role-btn" data-role="lecturer">Lecturer</button>
+    </div>
+  <div class="login-box">
+    <input type="email" id="email" placeholder="yourname@pwani.co.ke"> 
+    <input type="password" id="password" placeholder="Password">
+    <button id="loginBtn">Login</button>
+    <p id="loginMessage"></p>
+    
+  </div>
+</section>
+
+
+  <script src="script.js"></script>
+</body>
+</html>
