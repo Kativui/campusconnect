@@ -20,5 +20,5 @@ loginMessage.textContent = 'Login successful!';
 loginMessage.className = 'success';
 localStorage.setItem('loggedIn', 'true');
 document.body.classList.add('logged-in');
-window.location.href = 'announcements.html';
+window.location.href = 'home.html';
 });

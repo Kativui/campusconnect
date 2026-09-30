@@ -353,3 +353,43 @@ body:not(.logged-in) nav a {
   color: #555;
   font-size: 14px;
 }
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 26px;
+  height: 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.hamburger span {
+  display: block;
+  height: 3px;
+  background: white;
+  border-radius: 2px;
+}
+
+#navMenu {
+  position: absolute;
+  top: 100%;
+  right: 30px;
+  background: #0b3d91;
+  flex-direction: column;
+  display: none;
+  min-width: 200px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  border-radius: 0 0 8px 8px;
+  z-index: 50;
+}
+
+#navMenu.open {
+  display: flex;
+}
+
+#navMenu a {
+  padding: 14px 20px;
+  margin-left: 0;
+}
