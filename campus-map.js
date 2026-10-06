@@ -1,34 +1,53 @@
 const zones = [
-  { name: 'Academic Core', x: 20, y: 20, w: 340, h: 320 },
-  { name: 'Student Life', x: 380, y: 20, w: 340, h: 260 },
-  { name: 'Schools (Outlying)', x: 20, y: 360, w: 700, h: 180 },
+  { name: 'Main Campus Core', x: 30, y: 30, w: 400, h: 300 },
+  { name: 'Student Life', x: 450, y: 30, w: 400, h: 230 },
+  { name: 'Outlying Schools', x: 30, y: 370, w: 820, h: 180 },
+  { name: 'Hostels', x: 30, y: 580, w: 820, h: 180 },
+  { name: 'Sports & Recreation', x: 30, y: 790, w: 820, h: 140 },
 ];
 
 const buildings = [
-  { id: 'old-admin', name: 'Old Administration Block', desc: 'Admissions Office, Room 1. Registrar and general administration.', x: 40, y: 60, w: 140, h: 55 },
-  { id: 'lt-halls', name: 'LTW & LTN Halls', desc: 'Large lecture theatres LTW and LTN.', x: 200, y: 60, w: 140, h: 55 },
-  { id: 'new-admin', name: 'New Administration Block', desc: 'Newer administration offices.', x: 40, y: 130, w: 140, h: 55 },
-  { id: 'pl-block', name: 'PL Block', desc: 'PL Block classrooms.', x: 200, y: 130, w: 140, h: 55 },
-  { id: 'library', name: 'New Library Block', desc: 'Main library, including LIBRARY GFE001, GFE 001B-F, and GFW002 rooms.', x: 40, y: 200, w: 300, h: 55 },
-  { id: 'sbn-sbs', name: 'SBN / SBS Complex', desc: 'Multi-story business/sciences building. Room numbers indicate floor: 001-099 ground floor, 101-199 first floor, 201-299 second floor, 301-399 third floor.', x: 40, y: 270, w: 220, h: 55 },
+  
+  { id: 'old-admin', name: 'Old Administration Block', desc: 'Admissions Office, Room 1. Registrar and general administration.', x: 50, y: 70, w: 170, h: 55 },
+  { id: 'lt-halls', name: 'LTW & LTN Hall', desc: 'Large lecture theatres. LTN is Lecture Theatre North.', x: 240, y: 70, w: 170, h: 55 },
+  { id: 'new-admin', name: 'New Administration Block', desc: 'Newer administration offices.', x: 50, y: 140, w: 170, h: 55 },
+  { id: 'pl-block', name: 'PL Block', desc: 'PL Block classrooms.', x: 240, y: 140, w: 170, h: 55 },
+  { id: 'cs-lab', name: 'Computer Science Lab', desc: 'Computer Science teaching lab, near New Administration Block.', x: 50, y: 210, w: 170, h: 55 },
+  { id: 's3-s2blocks', name: 'S3-S2blocks', desc: 'Classroom S3, right next to PL Block.', x: 240, y: 210, w: 170, h: 55 },
 
-  { id: 'dining', name: 'Student Dining Area', desc: 'Main campus dining hall.', x: 400, y: 60, w: 140, h: 50 },
-  { id: 'common-room', name: 'Common Room', desc: 'Student common room.', x: 560, y: 60, w: 140, h: 50 },
-  { id: 'hostels', name: 'Hostels 4 & 5', desc: 'On-campus student accommodation blocks.', x: 400, y: 125, w: 140, h: 50 },
-  { id: 'health', name: 'Health Unit', desc: 'On-campus clinic for outpatient consultations. Complicated cases referred to Kilifi County Referral Hospital.', x: 560, y: 125, w: 140, h: 50 },
-  { id: 'restaurant', name: 'Red Buffalo Restaurant', desc: 'Campus restaurant.', x: 400, y: 190, w: 140, h: 50 },
-  { id: 'sports', name: 'Graduation Square & Football Pitch', desc: 'Outdoor events space and football pitch.', x: 560, y: 190, w: 140, h: 50 },
+  
+  { id: 'dining', name: 'Student Dining Area', desc: 'Main campus dining hall.', x: 470, y: 70, w: 170, h: 50 },
+  { id: 'common-room', name: 'Common Room', desc: "Student's common room.", x: 660, y: 70, w: 170, h: 50 },
+  { id: 'health', name: 'Health Unit', desc: 'On-campus clinic for outpatient consultations. Complicated cases referred to Kilifi County Referral Hospital.', x: 470, y: 135, w: 170, h: 50 },
+  { id: 'restaurant', name: 'Red Buffalo Restaurant', desc: 'Campus restaurant, just off the main road into campus.', x: 660, y: 135, w: 170, h: 50 },
+  { id: 'botanical', name: 'Botanical Garden', desc: 'Established 2011 for research, education, and conservation. Sits near the Common Room.', x: 470, y: 200, w: 360, h: 50 },
 
-  { id: 'shss', name: 'School of Humanities and Social Sciences', desc: 'SHSS academic block, north of the main cluster.', x: 40, y: 410, w: 160, h: 55 },
-  { id: 'sasa', name: 'School of Agriculture (SASA)', desc: 'School of Agricultural Sciences and Agribusiness.', x: 220, y: 410, w: 160, h: 55 },
-  { id: 'sees', name: 'School of Environmental & Earth Sciences', desc: 'SEES academic block.', x: 400, y: 410, w: 160, h: 55 },
-  { id: 'botanical', name: 'Botanical Garden', desc: 'Established 2011 for research, education, and conservation.', x: 580, y: 410, w: 140, h: 55 },
+  
+  { id: 'library', name: 'New Library Block', desc: 'Main library, including LIBRARY GFE001, GFE 001B-F, and GFW002 rooms. Sits apart from the main cluster, near Kilifi-Ganze Road.', x: 50, y: 410, w: 250, h: 50 },
+  { id: 'shss', name: 'School of Humanities and Social Sciences', desc: 'SHSS academic block, north of the main cluster.', x: 320, y: 410, w: 250, h: 50 },
+  { id: 'sasa', name: 'School of Agriculture (SASA)', desc: 'School of Agricultural Sciences and Agribusiness, west of the Humanities block.', x: 590, y: 410, w: 250, h: 50 },
+  { id: 'sees-sbn-sbs', name: 'School of Environmental & Earth Sciences (SBN/SBS)', desc: 'Houses the SBN and SBS classroom blocks.', x: 50, y: 470, w: 250, h: 50 },
+  { id: 'ivet', name: 'TVET School (PF Block)', desc: 'Technical and vocational education block, west of the Environmental Sciences building.', x: 320, y: 470, w: 250, h: 50 },
+
+  
+  { id: 'hostel1', name: 'Hostel 1', desc: 'On-campus student accommodation.', x: 50, y: 620, w: 170, h: 50 },
+  { id: 'hostel2', name: 'Hostel 2', desc: 'On-campus student accommodation.', x: 240, y: 620, w: 170, h: 50 },
+  { id: 'hostel3', name: 'Hostel 3', desc: 'On-campus student accommodation.', x: 430, y: 620, w: 170, h: 50 },
+  { id: 'hostel4', name: 'Hostel 4', desc: 'On-campus student accommodation, near Old Administration Block.', x: 620, y: 620, w: 170, h: 50 },
+  { id: 'hostel5', name: 'Hostel 5', desc: 'On-campus student accommodation, near Old Administration Block.', x: 50, y: 690, w: 170, h: 50 },
+  { id: 'runda-hostel6', name: 'Runda Hostel 6 (Boys)', desc: 'On-campus student accommodation.', x: 240, y: 690, w: 250, h: 50 },
+
+
+  { id: 'football-pitch', name: 'Football Pitch', desc: 'Main football pitch.', x: 50, y: 830, w: 180, h: 60 },
+  { id: 'graduation-square', name: 'Graduation Square', desc: 'Outdoor space used for graduation ceremonies.', x: 250, y: 830, w: 180, h: 60 },
+  { id: 'handball-pitch', name: 'Handball Pitch', desc: 'Handball court, next to graduation square.', x: 450, y: 830, w: 180, h: 60 },
+  { id: 'basketball-court', name: 'Basketball Court', desc: 'Outdoor basketball court.', x: 650, y: 830, w: 180, h: 60 },
 ];
 
 const mapContainer = document.getElementById('mapContainer');
 const mapInfo = document.getElementById('mapInfo');
 
-let svg = '<svg viewBox="0 0 750 560" style="width: 100%; height: auto;">';
+let svg = '<svg viewBox="0 0 900 970" style="width: 100%; height: auto;">';
 
 zones.forEach(z => {
   svg += `
