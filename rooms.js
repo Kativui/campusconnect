@@ -17,7 +17,7 @@ const unitResults = document.getElementById('unitResults');
 
 function buildingFor(room) {
   if (room.startsWith('LIBRARY')) return 'library';
-  if (room.startsWith('SBN') || room.startsWith('SBS')) return 'sbn-sbs';
+  if (room.startsWith('SBN') || room.startsWith('SBS')) return 'sees-sbn-sbs';
   if (room.startsWith('SHSS')) return 'shss';
   if (room === 'LTN' || room === 'LTW') return 'lt-halls';
   if (room.startsWith('BA (CC)')) return 'new-admin';

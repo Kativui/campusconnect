@@ -16,7 +16,7 @@ const buildings = [
   { id: 's3-s2blocks', name: 'S3-S2blocks', desc: 'Classroom S3, right next to PL Block.', x: 240, y: 210, w: 170, h: 55 },
 
   
-  { id: 'dining', name: 'Student Dining Area', desc: 'Main campus dining hall.', x: 470, y: 70, w: 170, h: 50 },
+  { id: 'dining', name: 'Students mess room', desc: 'Main campus dining hall.', x: 470, y: 70, w: 170, h: 50 },
   { id: 'common-room', name: 'Common Room', desc: "Student's common room.", x: 660, y: 70, w: 170, h: 50 },
   { id: 'health', name: 'Health Unit', desc: 'On-campus clinic for outpatient consultations. Complicated cases referred to Kilifi County Referral Hospital.', x: 470, y: 135, w: 170, h: 50 },
   { id: 'restaurant', name: 'Red Buffalo Restaurant', desc: 'Campus restaurant, just off the main road into campus.', x: 660, y: 135, w: 170, h: 50 },
