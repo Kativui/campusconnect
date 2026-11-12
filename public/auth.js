@@ -23,6 +23,8 @@ document.addEventListener('DOMContentLoaded', function () {
     logoutLink.addEventListener('click', function (e) {
       e.preventDefault();
       localStorage.removeItem('loggedIn');
+            localStorage.removeItem('token');
+      localStorage.removeItem('user');
       window.location.href = 'index.html';
     });
   }
