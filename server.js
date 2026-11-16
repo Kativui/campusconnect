@@ -21,6 +21,24 @@ const db = mysql.createPool({
 db.query('SELECT 1')
   .then(() => console.log('Connected to MySQL'))
   .catch(err => console.error('MySQL connection failed:', err.message));
+function requireAuth(req, res, next) {
+  const header = req.headers.authorization || '';
+  const token = header.replace('Bearer ', '');
+  try {
+    req.user = jwt.verify(token, process.env.JWT_SECRET);
+    next();
+  } catch (err) {
+    res.status(401).json({ error: 'Please log in.' });
+  }
+}
+function requireLecturer(req, res, next) {
+  if (req.user.role !== 'lecturer') {
+    return res.status(403).json({ error: 'Only lecturers can book rooms.' });
+  }
+  next();
+}
+
+
 
 app.post('/api/signup', async (req, res) => {
   const { name, email, password, role } = req.body;
@@ -81,6 +99,29 @@ app.post('/api/login', async (req, res) => {
     res.status(500).json({ error: 'Server error.' });
   }
 });
+
+app.post('/api/bookings', requireAuth, requireLecturer, async (req, res) => {
+  const { room, day, slot, week, reason } = req.body;
+    if (!room || !day || !slot || !week || !reason) {
+    return res.status(400).json({ error: 'Fill in room, day, slot, week and reason.' });
+  }
+    try {
+    await db.query(
+      'INSERT INTO bookings (room, day, slot, week, reason, booked_by) VALUES (?, ?, ?, ?, ?, ?)',
+      [room, day, slot, week, reason, req.user.id]
+    );
+    res.status(201).json({ message: 'Room booked.' });
+  } catch (err) {
+    if (err.code === 'ER_DUP_ENTRY') {
+      return res.status(409).json({ error: 'That room is already booked for this slot.' });
+    }
+    console.error(err);
+    res.status(500).json({ error: 'Server error.' });
+  }
+});
+
+
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`CampusConnect running on port ${PORT}`);
