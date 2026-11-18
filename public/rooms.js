@@ -15,6 +15,10 @@ const unitSearch = document.getElementById('unitSearch');
 const unitSearchBtn = document.getElementById('unitSearchBtn');
 const unitResults = document.getElementById('unitResults');
 
+const token = localStorage.getItem('token');
+const user = JSON.parse(localStorage.getItem('user') || 'null');
+const isLecturer = user && user.role === 'lecturer';
+
 function buildingFor(room) {
   if (room.startsWith('LIBRARY')) return 'library';
   if (room.startsWith('SBN') || room.startsWith('SBS')) return 'sees-sbn-sbs';
@@ -25,7 +29,14 @@ function buildingFor(room) {
   return null;
 }
 
-searchBtn.addEventListener('click', function () {
+function mapLink(room) {
+  const bId = buildingFor(room);
+  return bId ? `<a href="campus-map.html#${bId}" class="map-link">View on map</a>` : '';
+}
+
+searchBtn.addEventListener('click', async function () {
+  if (!data) return;
+
   const day = daySelect.value;
   const slot = slotSelect.value;
   const week = Math.min(Math.max(Number(weekInput.value) || 1, 1), 15);
@@ -34,27 +45,76 @@ searchBtn.addEventListener('click', function () {
   const busy = data.classes.filter(c =>
     c.day === day && c.slot === slot && (c.weeks === null || c.weeks.includes(week))
   );
-
   const busyRooms = new Set(busy.map(c => c.room));
-  const free = data.rooms.filter(r => !busyRooms.has(r));
 
-  results.innerHTML = '';
+  let reservedRooms = new Set();
+  try {
+    const bookedRes = await fetch(`/api/bookings?day=${encodeURIComponent(day)}&week=${week}`);
+    const booked = await bookedRes.json();
+    reservedRooms = new Set(booked.filter(b => b.slot === slot).map(b => b.room));
+  } catch (err) {
+    console.error('Could not load bookings', err);
+  }
+
+  const free = data.rooms.filter(r => !busyRooms.has(r) && !reservedRooms.has(r));
+
+  let html = '';
 
   if (free.length === 0) {
-    results.innerHTML = '<p>No free rooms at this time.</p>';
+    html += '<p>No free rooms at this time.</p>';
   }
 
   free.forEach(r => {
-    const bId = buildingFor(r);
-    const link = bId ? `<a href="campus-map.html#${bId}" class="map-link">View on map</a>` : '';
-    results.innerHTML += `<div class="room"><h3>${r}</h3><span class="status free">Free</span>${link}</div>`;
+    const bookBtn = isLecturer
+      ? `<button class="book-btn" data-room="${r}" data-day="${day}" data-slot="${slot}" data-week="${week}">Book</button>`
+      : '';
+    html += `<div class="room"><h3>${r}</h3><span class="status free">Free</span>${mapLink(r)}${bookBtn}</div>`;
+  });
+
+  reservedRooms.forEach(r => {
+    html += `<div class="room"><h3>${r}</h3><span class="status reserved">Reserved</span>${mapLink(r)}</div>`;
   });
 
   busy.forEach(c => {
-    const bId = buildingFor(c.room);
-    const link = bId ? `<a href="campus-map.html#${bId}" class="map-link">View on map</a>` : '';
-    results.innerHTML += `<div class="room"><h3>${c.room}</h3><p>${c.unit}</p><span class="status reserved">In use</span>${link}</div>`;
+    html += `<div class="room"><h3>${c.room}</h3><p>${c.unit}</p><span class="status reserved">In use</span>${mapLink(c.room)}</div>`;
   });
+
+  results.innerHTML = html;
+});
+
+results.addEventListener('click', async function (e) {
+  const btn = e.target.closest('.book-btn');
+  if (!btn) return;
+
+  const reason = prompt('Reason for booking ' + btn.dataset.room + ':');
+  if (!reason || reason.trim() === '') return;
+
+  try {
+    const response = await fetch('/api/bookings', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify({
+        room: btn.dataset.room,
+        day: btn.dataset.day,
+        slot: btn.dataset.slot,
+        week: Number(btn.dataset.week),
+        reason: reason.trim()
+      })
+    });
+    const result = await response.json();
+
+    if (!response.ok) {
+      alert(result.error);
+    } else {
+      alert('Room booked.');
+    }
+    searchBtn.click();
+  } catch (err) {
+    alert('Cannot reach the server.');
+  }
 });
 
 unitSearchBtn.addEventListener('click', function () {

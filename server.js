@@ -121,7 +121,23 @@ app.post('/api/bookings', requireAuth, requireLecturer, async (req, res) => {
 });
 
 
+app.get('/api/bookings', async (req, res) => {
+    const { day, week } = req.query;
+  if (!day || !week) {
+    return res.status(400).json({ error: 'Choose a day and week.' });
+  }
+    try {
+    const [rows] = await db.query(
+      'SELECT room, slot FROM bookings WHERE day = ? AND week = ?',
+      [day, week]
+    );
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error.' });
+  }
 
+});
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`CampusConnect running on port ${PORT}`);

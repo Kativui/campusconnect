@@ -435,3 +435,12 @@ body:not(.logged-in) nav a {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   margin-bottom: 15px;
 }
+.book-btn {
+  margin-top: 8px;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  background: #1F3864;
+  color: white;
+  cursor: pointer;
+}
