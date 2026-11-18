@@ -154,6 +154,44 @@ app.delete('/api/bookings/:id', requireAuth, requireLecturer, async (req, res) =
     res.status(500).json({ error: 'Server error.' });
   }
 });
+function requirePoster(req, res, next) {
+  if (req.user.role !== 'admin' && req.user.role !== 'org') {
+    return res.status(403).json({ error: 'Only administrators and student organizations can post announcements.' });
+  }
+  next();
+}
+
+app.get('/api/announcements', async (req, res) => {
+  try {
+    const [rows] = await db.query(
+      `SELECT a.id, a.title, a.body, a.created_at, u.name AS posted_by, u.role AS poster_role
+       FROM announcements a
+       JOIN users u ON u.id = a.posted_by
+       ORDER BY a.created_at DESC`
+    );
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error.' });
+  }
+});
+
+app.post('/api/announcements', requireAuth, requirePoster, async (req, res) => {
+  const { title, body } = req.body;
+  if (!title || !body) {
+    return res.status(400).json({ error: 'Enter a title and a message.' });
+  }
+  try {
+    await db.query(
+      'INSERT INTO announcements (title, body, posted_by) VALUES (?, ?, ?)',
+      [title.trim(), body.trim(), req.user.id]
+    );
+    res.status(201).json({ message: 'Announcement posted.' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error.' });
+  }
+});
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`CampusConnect running on port ${PORT}`);

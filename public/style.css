@@ -444,3 +444,12 @@ body:not(.logged-in) nav a {
   color: white;
   cursor: pointer;
 }
+#postBody {
+  width: 100%;
+  padding: 10px;
+  margin: 6px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: inherit;
+  box-sizing: border-box;
+}

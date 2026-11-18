@@ -45,7 +45,19 @@
       <p>Offices, hostels, and help you'll need.</p>
     </a>
   </div>
-  <article class="announcement">
+
+  <div id="postBox" class="login-box" style="display:none">
+    <h3>Post an announcement</h3>
+    <input type="text" id="postTitle" placeholder="Title">
+    <textarea id="postBody" placeholder="Message" rows="4"></textarea>
+    <button id="postBtn">Post</button>
+    <p id="postMessage"></p>
+  </div>
+
+  <div id="announcementList"></div>
+
+  <div id="staticAnnouncements">
+<article class="announcement">
   <span class="tag">Administration</span>
   <h3>Semester Registration Extended</h3>
   <p>Registration for the new semester has been extended to Friday. Visit the registrar's office with your fee statement.</p>
@@ -98,8 +110,9 @@
   <p>Weekly hands-on lab sessions covering Linux, Nmap, and ethical hacking basics. Every Tuesday at 3 PM in Lab 2. Beginners are welcome.</p>
   <small>Posted: 25 Sep 2026</small>
 </article>
+  </div>
 
 </main>
-
+<script src="announcements.js"></script>
 </body>
 </html>
