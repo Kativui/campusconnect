@@ -47,14 +47,15 @@ searchBtn.addEventListener('click', async function () {
   );
   const busyRooms = new Set(busy.map(c => c.room));
 
-  let reservedRooms = new Set();
+  let reservedList = [];
   try {
     const bookedRes = await fetch(`/api/bookings?day=${encodeURIComponent(day)}&week=${week}`);
     const booked = await bookedRes.json();
-    reservedRooms = new Set(booked.filter(b => b.slot === slot).map(b => b.room));
+    reservedList = booked.filter(b => b.slot === slot);
   } catch (err) {
     console.error('Could not load bookings', err);
   }
+  const reservedRooms = new Set(reservedList.map(b => b.room));
 
   const free = data.rooms.filter(r => !busyRooms.has(r) && !reservedRooms.has(r));
 
@@ -71,8 +72,11 @@ searchBtn.addEventListener('click', async function () {
     html += `<div class="room"><h3>${r}</h3><span class="status free">Free</span>${mapLink(r)}${bookBtn}</div>`;
   });
 
-  reservedRooms.forEach(r => {
-    html += `<div class="room"><h3>${r}</h3><span class="status reserved">Reserved</span>${mapLink(r)}</div>`;
+  reservedList.forEach(b => {
+    const cancelBtn = (isLecturer && user.id === b.booked_by)
+      ? `<button class="cancel-btn" data-id="${b.id}" data-room="${b.room}">Cancel booking</button>`
+      : '';
+    html += `<div class="room"><h3>${b.room}</h3><span class="status reserved">Reserved</span>${mapLink(b.room)}${cancelBtn}</div>`;
   });
 
   busy.forEach(c => {
@@ -83,37 +87,50 @@ searchBtn.addEventListener('click', async function () {
 });
 
 results.addEventListener('click', async function (e) {
-  const btn = e.target.closest('.book-btn');
-  if (!btn) return;
+  const bookBtn = e.target.closest('.book-btn');
+  const cancelBtn = e.target.closest('.cancel-btn');
 
-  const reason = prompt('Reason for booking ' + btn.dataset.room + ':');
-  if (!reason || reason.trim() === '') return;
+  if (bookBtn) {
+    const reason = prompt('Reason for booking ' + bookBtn.dataset.room + ':');
+    if (!reason || reason.trim() === '') return;
 
-  try {
-    const response = await fetch('/api/bookings', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
-      },
-      body: JSON.stringify({
-        room: btn.dataset.room,
-        day: btn.dataset.day,
-        slot: btn.dataset.slot,
-        week: Number(btn.dataset.week),
-        reason: reason.trim()
-      })
-    });
-    const result = await response.json();
-
-    if (!response.ok) {
-      alert(result.error);
-    } else {
-      alert('Room booked.');
+    try {
+      const response = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({
+          room: bookBtn.dataset.room,
+          day: bookBtn.dataset.day,
+          slot: bookBtn.dataset.slot,
+          week: Number(bookBtn.dataset.week),
+          reason: reason.trim()
+        })
+      });
+      const result = await response.json();
+      alert(response.ok ? 'Room booked.' : result.error);
+      searchBtn.click();
+    } catch (err) {
+      alert('Cannot reach the server.');
     }
-    searchBtn.click();
-  } catch (err) {
-    alert('Cannot reach the server.');
+  }
+
+  if (cancelBtn) {
+    if (!confirm('Cancel your booking for ' + cancelBtn.dataset.room + '?')) return;
+
+    try {
+      const response = await fetch('/api/bookings/' + cancelBtn.dataset.id, {
+        method: 'DELETE',
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      const result = await response.json();
+      alert(response.ok ? 'Booking cancelled.' : result.error);
+      searchBtn.click();
+    } catch (err) {
+      alert('Cannot reach the server.');
+    }
   }
 });
 

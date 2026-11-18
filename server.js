@@ -128,7 +128,7 @@ app.get('/api/bookings', async (req, res) => {
   }
     try {
     const [rows] = await db.query(
-      'SELECT room, slot FROM bookings WHERE day = ? AND week = ?',
+      'SELECT id, room, slot, booked_by FROM bookings WHERE day = ? AND week = ?',
       [day, week]
     );
     res.json(rows);
@@ -137,6 +137,22 @@ app.get('/api/bookings', async (req, res) => {
     res.status(500).json({ error: 'Server error.' });
   }
 
+});
+app.delete('/api/bookings/:id', requireAuth, requireLecturer, async (req, res) => {
+  const id = req.params.id;
+    try {
+    const [result] = await db.query(
+      'DELETE FROM bookings WHERE id = ? AND booked_by = ?',
+      [id, req.user.id]
+    );
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Booking not found, or it is not yours.' });
+    }
+    res.json({ message: 'Booking cancelled.' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error.' });
+  }
 });
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
