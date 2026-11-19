@@ -453,3 +453,36 @@ body:not(.logged-in) nav a {
   font-family: inherit;
   box-sizing: border-box;
 }
+#questionBody {
+  width: 100%;
+  padding: 10px;
+  margin: 6px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+.replies .reply {
+  margin: 10px 0 0 16px;
+  padding-left: 12px;
+  border-left: 3px solid #dbe4f3;
+}
+.reply-box {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+.reply-box input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+.reply-btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background: #1F3864;
+  color: white;
+  cursor: pointer;
+}

@@ -196,6 +196,60 @@ app.post('/api/announcements', requireAuth, requirePoster, async (req, res) => {
     res.status(500).json({ error: 'Server error.' });
   }
 });
+app.get('/api/messages', requireAuth, async (req, res) => {
+  const unit = (req.query.unit || '').trim().toUpperCase();
+  if (!unit) {
+    return res.status(400).json({ error: 'Enter a unit code.' });
+  }
+  try {
+    const [rows] = await db.query(
+      `SELECT m.id, m.unit_code, m.body, m.parent_id, m.created_at,
+              u.name AS sender, u.role AS sender_role
+       FROM messages m
+       JOIN users u ON u.id = m.sender_id
+       WHERE m.unit_code = ?
+       ORDER BY m.created_at ASC`,
+      [unit]
+    );
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error.' });
+  }
+});
+
+app.post('/api/messages', requireAuth, async (req, res) => {
+  const unit = (req.body.unit_code || '').trim().toUpperCase();
+  const body = (req.body.body || '').trim();
+  const parentId = req.body.parent_id || null;
+
+  if (!unit || !body) {
+    return res.status(400).json({ error: 'Enter a unit code and a message.' });
+  }
+  if (body.length > 1000) {
+    return res.status(400).json({ error: 'Keep messages under 1000 characters.' });
+  }
+
+  try {
+    if (parentId) {
+      const [parents] = await db.query(
+        'SELECT id FROM messages WHERE id = ? AND unit_code = ? AND parent_id IS NULL',
+        [parentId, unit]
+      );
+      if (parents.length === 0) {
+        return res.status(400).json({ error: 'That question was not found in this unit.' });
+      }
+    }
+    await db.query(
+      'INSERT INTO messages (unit_code, body, sender_id, parent_id) VALUES (?, ?, ?, ?)',
+      [unit, body, req.user.id, parentId]
+    );
+    res.status(201).json({ message: 'Posted.' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error.' });
+  }
+});
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`CampusConnect running on port ${PORT}`);

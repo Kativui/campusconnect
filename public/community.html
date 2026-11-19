@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Community | CampusConnect</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<script src="auth.js"></script>
+  <header class="navbar">
+    <h1 class="logo">CampusConnect</h1>
+      <button class="hamburger" id="navToggle" aria-label="Toggle navigation">
+    <span></span><span></span><span></span>
+  </button>
+  <nav id="navMenu">
+      <a href="home.html">Home</a>
+      <a href="announcements.html">Announcements</a>
+      <a href="rooms.html">Rooms</a>
+      <a href="freshers.html">Freshers Info</a>
+      <a href="campus-map.html">Campus Map</a>
+      <a href="community.html">Community</a>
+        <a href="#" id="logoutLink">Logout</a>
+    </nav>
+  </header>
+
+<main class="page">
+  <h2 class="page-title">Community</h2>
+  <p class="page-subtitle">Ask and answer questions about your units. Enter a unit code to open its board.</p>
+
+  <div class="filters">
+    <input type="text" id="unitInput" placeholder="Unit code, e.g. BEC B101">
+    <button id="openBtn">Open board</button>
+  </div>
+  <p id="boardMessage"></p>
+
+  <div id="board" style="display:none">
+    <h3 id="boardTitle"></h3>
+    <div class="login-box">
+      <textarea id="questionBody" placeholder="Ask a question about this unit" rows="3"></textarea>
+      <button id="askBtn">Ask</button>
+    </div>
+    <div id="thread"></div>
+  </div>
+</main>
+  <script src="community.js"></script>
+</body>
+</html>
